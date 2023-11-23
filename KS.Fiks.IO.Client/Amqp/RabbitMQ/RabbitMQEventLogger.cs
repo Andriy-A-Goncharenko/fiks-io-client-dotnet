@@ -30,7 +30,7 @@ namespace KS.Fiks.IO.Client.Amqp.RabbitMQ
         protected override void OnEventWritten(EventWrittenEventArgs eventData)
         {
             var message = $"EventLog from {EventSourceName} " +
-                          $", eventData.Level: {eventData.Level}, eventData.Message: {eventData.Message}";
+                          $", eventData.Level: {eventData.Level}, eventData.Message: {eventData.Message}, eventData.Keywords: {eventData.Keywords}";
 
             var i = 0;
             foreach (var payload in eventData.Payload)
@@ -52,6 +52,7 @@ namespace KS.Fiks.IO.Client.Amqp.RabbitMQ
                     }
                     catch (Exception e)
                     {
+                        message += $", Could not parse payload: {payload}";
                         //Do nothing
                     }
                 }
@@ -62,7 +63,8 @@ namespace KS.Fiks.IO.Client.Amqp.RabbitMQ
             if (eventData.Level.ToString().ToLower().Contains("err"))
             {
                 _logger.LogError(message);
-            } else if (eventData.Level.ToString().ToLower().Contains("warn"))
+            }
+            else if (eventData.Level.ToString().ToLower().Contains("warn"))
             {
                 _logger.LogWarning(message);
             }

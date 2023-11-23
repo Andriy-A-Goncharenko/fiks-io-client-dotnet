@@ -52,7 +52,7 @@ namespace KS.Fiks.IO.Client.Amqp.RabbitMQ
                     }
                     catch (Exception e)
                     {
-                        message += $", Could not parse payload. GetType: {payload.GetType()}";
+                        message += $", Could not parse payload. TYPE - GetType: {payload.GetType()}";
                         //Do nothing
                     }
                 }

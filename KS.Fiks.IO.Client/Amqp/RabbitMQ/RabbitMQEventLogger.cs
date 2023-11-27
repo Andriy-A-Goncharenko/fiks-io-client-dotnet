@@ -7,10 +7,9 @@ using RabbitMQ.Client.Logging;
 
 namespace KS.Fiks.IO.Client.Amqp.RabbitMQ
 {
-    public class RabbitMQEventLogger : EventListener
+    sealed class RabbitMQEventLogger : EventListener
     {
         private const string EventSourceName = "rabbitmq-dotnet-client";
-        private const string EventSourceName2 = "rabbitmq-client";
         private static ILogger<RabbitMQEventLogger> _logger;
         private readonly EventLevel _eventLevel;
 
@@ -22,11 +21,11 @@ namespace KS.Fiks.IO.Client.Amqp.RabbitMQ
 
         protected override void OnEventSourceCreated(EventSource eventSource)
         {
+            base.OnEventSourceCreated(eventSource);
             switch (eventSource.Name)
             {
                 case EventSourceName:
-                case EventSourceName2:
-                    EnableEvents(eventSource, _eventLevel);
+                    EnableEvents(eventSource, _eventLevel, EventKeywords.All);
                     break;
             }
         }
